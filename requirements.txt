@@ -1,0 +1,11 @@
+git+https://github.com/PolicyEngine/openfisca-us
+git+https://github.com/PolicyEngine/openfisca-us-data
+git+https://github.com/PSLmodels/microdf
+git+https://github.com/PSLmodels/synthimpute
+plotly
+flask
+flask_cors
+rdbl
+kaleido
+google-cloud-storage>=1.42.0
+gunicorn
