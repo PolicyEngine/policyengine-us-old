@@ -18,14 +18,14 @@ function Parameter(props) {
 		formatter = (value) => `${value}%`;
 		parser = (value) => value.replace("%", "");
 	} else if (props.param.type === "weekly") {
-		formatter = (value) => `£${value}/week`;
-		parser = (value) => value.replace("£", "").replace("/week", "");
+		formatter = (value) => `$${value}/week`;
+		parser = (value) => value.replace("$", "").replace("/week", "");
 	} else if (props.param.type === "yearly") {
-		formatter = (value) => `£${value}/year`;
-		parser = (value) => value.replace("£", "").replace("/year", "");
+		formatter = (value) => `$${value}/year`;
+		parser = (value) => value.replace("$", "").replace("/year", "");
 	} else if (props.param.type === "monthly") {
-		formatter = (value) => `£${value}/month`;
-		parser = (value) => value.replace("£", "").replace("/month", "");
+		formatter = (value) => `$${value}/month`;
+		parser = (value) => value.replace("$", "").replace("/month", "");
 	}
 	let component;
 	if(props.param.type == "bool") {
@@ -126,7 +126,6 @@ export class UBIParameterGroup extends React.Component {
 					this.props.onChange("adult_UBI", this.props.policy["adult_UBI"].value + Math.round(json.UBI / 52, 2));
 					this.props.onChange("senior_UBI", this.props.policy["senior_UBI"].value + Math.round(json.UBI / 52, 2));
 				}).catch(e => {
-					console.log(e);
 					this.setState({waiting: false, error: true});
 				});
 		});
@@ -172,68 +171,13 @@ export function NothingControls(props) {
 
 function PolicyControls(props) {
 	const controlSet = {
-		main_rates: [
-			"basic_rate",
-			"higher_rate",
-			"higher_threshold",
-			"add_rate",
-			"add_threshold",
-		],
-		sav_div: [
-			"abolish_savings_allowance",
-			"abolish_dividend_allowance",
-		],
-		it_alt: [
-			"abolish_income_tax"
-		],
-		lvt: [
-			"LVT"
-		],
-		employee_side: [
-			"NI_main_rate",
-			"NI_PT",
-			"NI_add_rate",
-			"NI_UEL",
-		],
-		self_emp: [
-			"NI_LPL",
-			"NI_class_4_main_rate",
-			"NI_UPL",
-			"NI_class_4_add_rate"
-		],
-		ni_alt: [
-			"abolish_NI"
-		],
-		allowances: [
-			"personal_allowance",
-		],
 		UBI: [
-			"child_UBI",
-			"adult_UBI",
-			"senior_UBI",
-			"surplus_UBI",
-		],
-		legacy_benefits: [
-			"abolish_CTC",
-			"abolish_WTC",
-			"abolish_HB",
-		],
-		child_benefit: [
-			"abolish_CB",
-		],
-		state_pension: [
-			"abolish_SP",
-		],
-		universal_credit: [
-			"abolish_UC"
+			"UBI",
 		]
 	};
 	const names = controlSet[props.selected];
 	if (!(props.selected in controlSet)) {
 		return <NothingControls key={props.selected} policy={props.policy} />;
-	}
-	if(props.selected == "UBI") {
-		return <UBIParameterGroup onChange={props.onChange} policy={props.policy} />;
 	}
 	return <ParameterGroup name={props.selected} key={props.selected} onChange={props.onChange} policy={props.policy} names={names} />;
 }

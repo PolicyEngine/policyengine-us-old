@@ -1,4 +1,4 @@
-from openfisca_uk import IndividualSim
+from openfisca_us import IndividualSim
 from policy_engine.utils.formatting import DARK_BLUE, format_fig
 from policy_engine.populations.charts import waterfall
 import json

@@ -1,21 +1,19 @@
-from policy_engine.populations.metrics import poverty_rate, pct_change
-from policy_engine.utils.formatting import format_fig, BLUE, GRAY, DARK_BLUE
+from policy_engine_us.populations.metrics import poverty_rate, pct_change
+from policy_engine_us.utils.formatting import format_fig, BLUE, GRAY, DARK_BLUE
 import plotly.express as px
 from plotly.subplots import make_subplots
 import json
 import numpy as np
-from openfisca_uk import Microsimulation
-from openfisca_uk_data import FRS_WAS_Imputation
-from openfisca_uk.reforms.presets.current_date import use_current_parameters
+from openfisca_us import Microsimulation
 import pandas as pd
 
 WHITE = "#FFF"
 
 
 def decile_chart(baseline, reformed):
-    income = baseline.calc("household_net_income", map_to="person")
-    equiv_income = baseline.calc("equiv_household_net_income", map_to="person")
-    gain = reformed.calc("household_net_income", map_to="person") - income
+    income = baseline.calc("net_income", map_to="person")
+    equiv_income = baseline.calc("net_income", map_to="person")
+    gain = reformed.calc("net_income", map_to="person") - income
     changes = (
         gain.groupby(equiv_income.decile_rank()).sum()
         / income.groupby(equiv_income.decile_rank()).sum()
@@ -179,9 +177,7 @@ def total_income(sim):
 def population_waterfall_chart(reform, labels, baseline, reformed):
     net_income = [total_income(baseline)]
     for i in range(1, len(reform)):
-        partially_reformed = Microsimulation(
-            use_current_parameters(), reform[:i]
-        )
+        partially_reformed = Microsimulation(reform[:i])
         net_income += [total_income(partially_reformed)]
     net_income += [total_income(reformed)]
     net_income = np.array(net_income)
@@ -201,15 +197,15 @@ def population_waterfall_chart(reform, labels, baseline, reformed):
         title="Budget breakdown",
         xaxis_title="",
         yaxis_title="Yearly amount",
-        yaxis_tickprefix="£",
+        yaxis_tickprefix="$",
         legend_title="",
     )
     return json.loads(fig.to_json())
 
 
 def age_chart(baseline, reformed):
-    income = baseline.calc("household_net_income", map_to="person")
-    gain = reformed.calc("household_net_income", map_to="person") - income
+    income = baseline.calc("net_income", map_to="person")
+    gain = reformed.calc("net_income", map_to="person") - income
     values = gain.groupby(baseline.calc("age")).mean().rolling(3).median()
     df = pd.DataFrame({"Age": values.index, "Change": values.values})
     fig = (
@@ -218,7 +214,7 @@ def age_chart(baseline, reformed):
             title="Impact on net income by age",
             xaxis_title="Age",
             yaxis_title="Average change to net income",
-            yaxis_tickprefix="£",
+            yaxis_tickprefix="$",
             showlegend=False,
         )
         .update_traces(marker_color=BLUE)
@@ -247,14 +243,14 @@ NAMES = (
 
 def intra_decile_graph_data(baseline, reformed):
     l = []
-    income = baseline.calc("equiv_household_net_income", map_to="person")
+    income = baseline.calc("net_income", map_to="person")
     decile = income.decile_rank()
-    gain = reformed.calc(
-        "household_net_income", map_to="person"
-    ) - baseline.calc("household_net_income", map_to="person")
+    gain = reformed.calc("net_income", map_to="person") - baseline.calc(
+        "net_income", map_to="person"
+    )
     rel_gain = (
-        gain / baseline.calc("household_net_income", map_to="person")
-    ).dropna()
+        gain / np.maximum(baseline.calc("net_income", map_to="person"), 0)
+    ).fillna(0.06)
     bands = (None, 0.05, 1e-3, -1e-3, -0.05, None)
     for upper, lower, name in zip(bands[:-1], bands[1:], NAMES):
         fractions = []
@@ -311,6 +307,7 @@ def intra_decile_chart(baseline, reformed):
         color="Outcome",
         color_discrete_sequence=INTRA_DECILE_COLORS,
         orientation="h",
+        width=10,
     )
     fig2 = px.bar(
         df[df.Decile == "All"],
@@ -319,6 +316,7 @@ def intra_decile_chart(baseline, reformed):
         color="Outcome",
         color_discrete_sequence=INTRA_DECILE_COLORS,
         orientation="h",
+        width=10,
     )
     fig = make_subplots(
         rows=2,

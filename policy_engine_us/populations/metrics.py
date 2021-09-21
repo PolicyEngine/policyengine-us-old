@@ -1,5 +1,5 @@
-from openfisca_uk import Microsimulation
-from rdbl import gbp
+from openfisca_us import Microsimulation
+from rdbl import usd
 
 
 def pct_change(x, y):
@@ -7,7 +7,7 @@ def pct_change(x, y):
 
 
 def poverty_rate(sim, population_var):
-    return sim.calc("in_poverty_bhc", map_to="person", period=2021)[
+    return sim.calc("in_poverty", map_to="person", period=2020)[
         sim.calc(population_var) > 0
     ].mean()
 
@@ -25,21 +25,21 @@ def headline_metrics(
         loser_share, and gini_change.
     :rtype: dict
     """
-    new_income = reformed.calc("equiv_household_net_income", map_to="person")
-    old_income = baseline.calc("equiv_household_net_income", map_to="person")
+    new_income = reformed.calc("net_income", map_to="person")
+    old_income = baseline.calc("net_income", map_to="person")
     gain = new_income - old_income
     net_cost = (
         reformed.calc("net_income").sum() - baseline.calc("net_income").sum()
     )
     poverty_change = pct_change(
-        baseline.calc("in_poverty_bhc", map_to="person").mean(),
-        reformed.calc("in_poverty_bhc", map_to="person").mean(),
+        baseline.calc("in_poverty", map_to="person").mean(),
+        reformed.calc("in_poverty", map_to="person").mean(),
     )
     winner_share = (gain > 0).mean()
     loser_share = (gain < 0).mean()
     gini_change = pct_change(old_income.gini(), new_income.gini())
     return dict(
-        net_cost=gbp(net_cost),
+        net_cost=usd(net_cost),
         poverty_change=float(poverty_change),
         winner_share=float(winner_share),
         loser_share=float(loser_share),

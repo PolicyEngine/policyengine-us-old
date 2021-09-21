@@ -66,9 +66,9 @@ export function PopulationResultsPane(props) {
 			<Row>
 				<Chart plot={props.results.waterfall_chart} md={12} />
 			</Row>
-			<Row>
+			{/*<Row>
 				<Chart plot={props.results.poverty_chart} md={12} />
-			</Row>
+			</Row>*/}
 			<Row>
 				<Chart plot={props.results.decile_chart} md={12}/>
 			</Row>

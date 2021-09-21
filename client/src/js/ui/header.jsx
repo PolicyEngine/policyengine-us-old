@@ -32,7 +32,7 @@ export function TopHeader() {
 		<>
 			<div className="d-none d-md-block">
 				<PageHeader
-					title={<><a href="/" style={{color: "black"}}>PolicyEngine<sub style={{fontSize: "50%"}}>UK</sub></a></>}
+					title={<><a href="/" style={{color: "black"}}>PolicyEngine<sub style={{fontSize: "50%"}}>US</sub></a></>}
 					style={{minHeight: 40}}
 					tags={[<Tag key="beta" color="processing">BETA</Tag>]}
 				/>
@@ -40,7 +40,7 @@ export function TopHeader() {
 			<div className="d-md-none">
 				<div className="d-flex justify-content-center">
 					<PageHeader
-						title={<>PolicyEngine<sub style={{fontSize: "50%"}}>UK</sub></>}
+						title={<>PolicyEngine<sub style={{fontSize: "50%"}}>US</sub></>}
 						style={{paddingBottom: 8}}
 						tags={[<Tag key="beta" color="processing">BETA</Tag>]}
 					/>

@@ -3,16 +3,14 @@ from flask import Flask, request, make_response, send_from_directory
 from flask_cors import CORS
 import logging
 from time import time
-from openfisca_uk import Microsimulation, IndividualSim
+from openfisca_us import Microsimulation, IndividualSim
 from google.cloud import storage
 import gc
 
-from policy_engine.simulation.situations import create_situation
-from policy_engine.simulation.reforms import create_reform, add_LVT
-from openfisca_uk.reforms.presets.current_date import use_current_parameters
+from policy_engine_us.simulation.reforms import create_reform, BASELINE_REFORM
 
-from policy_engine.populations.metrics import headline_metrics
-from policy_engine.populations.charts import (
+from policy_engine_us.populations.metrics import headline_metrics
+from policy_engine_us.populations.charts import (
     decile_chart,
     intra_decile_chart,
     poverty_chart,
@@ -20,27 +18,20 @@ from policy_engine.populations.charts import (
     population_waterfall_chart,
 )
 
-from policy_engine.situations.metrics import headline_figures
-from policy_engine.situations.charts import (
-    household_waterfall_chart,
-    mtr_chart,
-    budget_chart,
-)
-from openfisca_uk_data import FRS_WAS_Imputation
-
 VERSION = "0.0.11"
-USE_CACHE = True
+USE_CACHE = False
 logging.getLogger("werkzeug").disabled = True
 
 client = storage.Client()
 bucket = client.get_bucket("uk-policy-engine.appspot.com")
 
-baseline = Microsimulation(use_current_parameters())
-baseline_microsim = baseline
+baseline = Microsimulation(BASELINE_REFORM)
 
 app = Flask(__name__, static_url_path="")
 logging.getLogger("werkzeug").disabled = True
 CORS(app)
+
+app.logger.info("Pre-computations done")
 
 
 def static_site():
@@ -61,6 +52,7 @@ for route in STATIC_SITE_ROUTES:
 
 @app.route("/api/ubi")
 def ubi():
+    return
     start_time = time()
     app.logger.info("UBI size request received")
     params = {**request.args, **(request.json or {})}
@@ -101,8 +93,8 @@ def population_reform():
     result = dict(
         **headline_metrics(baseline, reformed),
         decile_chart=decile_chart(baseline, reformed),
-        age_chart=age_chart(baseline, reformed),
-        poverty_chart=poverty_chart(baseline, reformed),
+        # age_chart=age_chart(baseline, reformed),
+        # poverty_chart=poverty_chart(baseline, reformed),
         waterfall_chart=population_waterfall_chart(
             reform, components, baseline, reformed
         ),

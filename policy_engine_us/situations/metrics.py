@@ -1,4 +1,4 @@
-from openfisca_uk.tools.simulation import IndividualSim
+from openfisca_us import IndividualSim
 import numpy as np
 
 
