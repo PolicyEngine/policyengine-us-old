@@ -1,6 +1,6 @@
 import React from "react";
-import SituationOverview from "./situation-results/overview";
-import { SituationResultsPane } from "./situation-results/results";
+import SituationOverview from "./household-results/overview";
+import { SituationResultsPane } from "./household-results/results";
 import { LoadingResultsPane } from "./population-results/results";
 import { Row, Col } from "react-bootstrap";
 
@@ -22,13 +22,13 @@ class SituationResults extends React.Component {
 				let variable = this.state.situation.people[person][variableName];
 				submission[variableName + "_" + (i)] = variable.value;
 			}
-			submission["family_" + i] = 1;
+			submission["tax_unit_" + i] = 1;
 			i++;
 		}
 		i = 1;
-		for(let family in this.state.situation.families) {
-			for(let variableName in this.state.situation.families[family]) {
-				let variable = this.state.situation.families[family][variableName];
+		for(let tax_unit in this.state.situation.tax_units) {
+			for(let variableName in this.state.situation.tax_units[tax_unit]) {
+				let variable = this.state.situation.tax_units[tax_unit][variableName];
 				submission[variableName + "_" + i] = variable.value;
 			}
 			i++;
@@ -44,7 +44,7 @@ class SituationResults extends React.Component {
 				submission[variableName + "_" + 1] = variable.value;
 			}
 		}
-		let url = new URL("https://uk.policyengine.org/api/situation-reform");
+		let url = new URL("http://localhost:5000/api/household-reform");
 		url.search = new URLSearchParams(submission).toString();
 		this.setState({ waiting: true }, () => {
 			fetch(url)

@@ -38,31 +38,25 @@ def add_empty_UBI():
             basic_income = UBI_params.all
             return basic_income
 
-    class net_income(Variable):
-        value_type = float
-        entity = SPMUnit
-        definition_period = YEAR
+    baseline_SPM_unit_net_income = type(
+        baseline_system.variables["SPM_unit_net_income"]
+    )
 
-        def formula(spm_unit, period):
+    class SPM_unit_net_income(baseline_SPM_unit_net_income):
+        def formula(spm_unit, period, parameters):
             ubi = spm_unit.sum(spm_unit.members("UBI", period))
-            return spm_unit("SPM_unit_net_income", period) + ubi
-
-    class in_poverty(Variable):
-        value_type = float
-        entity = SPMUnit
-        definition_period = YEAR
-
-        def formula(spm_unit, period):
-            income = spm_unit("net_income", period)
-            threshold = spm_unit("poverty_threshold", period)
-            return income < threshold
+            return (
+                baseline_SPM_unit_net_income.formula(
+                    spm_unit, period, parameters
+                )
+                + ubi
+            )
 
     class add_UBI(Reform):
         def apply(self):
             self.modify_parameters(add_age_params)
             self.add_variable(UBI)
-            self.add_variable(net_income)
-            self.update_variable(in_poverty)
+            self.update_variable(SPM_unit_net_income)
 
     return add_UBI
 

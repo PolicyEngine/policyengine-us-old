@@ -17,7 +17,7 @@ function getURLParamsFromPolicy(target, policy) {
 			searchParams.delete(key);
 		}
 	}
-	const url = `${target || "/situation"}?${searchParams.toString()}`;
+	const url = `${target || "/household"}?${searchParams.toString()}`;
 	return url;
 }
 

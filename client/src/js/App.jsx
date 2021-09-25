@@ -5,9 +5,9 @@ import React from "react";
 import Header from "./ui/header";
 import { TopHeader } from "./ui/header";
 import Policy from "./pages/policy";
-import Situation from "./pages/situation";
+import Situation from "./pages/household";
 import PopulationResults from "./pages/population-results";
-import SituationResults from "./pages/situation-results";
+import SituationResults from "./pages/household-results";
 import FAQ from "./pages/faq";
 import {
 	BrowserRouter as Router,
@@ -21,7 +21,7 @@ import { Divider, BackTop } from "antd";
 // JSON imports
 
 import DEFAULT_POLICY from "./pages/policy/default_policy";
-import DEFAULT_SITUATION from "./pages/situation/default_situation";
+import DEFAULT_SITUATION from "./pages/household/default_situation";
 
 // CSS imports
 
@@ -60,11 +60,11 @@ class App extends React.Component {
 						<Header step={1} situationEntered={this.state.situationEntered}/>
 						<PopulationResults policy={this.state.policy} situation={this.state.situation}/>
 					</Route>
-					<Route path="/situation">
+					<Route path="/household">
 						<Header step={2} situationEntered={this.state.situationEntered}/>
 						<Situation policy={this.state.policy} onSubmit={situation =>{this.setState({situationEntered: true, situation: situation});}} situation={this.state.situation} />
 					</Route>
-					<Route path="/situation-results">
+					<Route path="/household-results">
 						<Header step={3} situationEntered={this.state.situationEntered}/>
 						<SituationResults policy={this.state.policy} situation={this.state.situation}/>
 					</Route>

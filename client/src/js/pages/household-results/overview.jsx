@@ -58,7 +58,6 @@ function SituationOverview(props) {
 								<Step status="finish" title={numPensioners + " pensioner" + (numPensioners == 1 ? "" : "s")}/> :
 								null
 						}
-						
 					</>
 				}
 			</Steps>
@@ -66,9 +65,8 @@ function SituationOverview(props) {
 				!props.noButton ?
 					<Empty description="" image={null}>
 						<SimulateButton text={<><ArrowLeftOutlined /> Change the policy reform</>} target="/" policy={props.policy} onClick={props.onSubmit} />
-						<SimulateButton text={<><ArrowLeftOutlined /> Simulate on the population</>} target="/population-results" policy={props.policy} onClick={props.onSubmit}/>
-						<SimulateButton hidden text="Skip to your household" target="/situation" policy={props.policy} onClick={props.onSubmit} />
-						<SimulateButton primary text="See your results" target="/situation-results" policy={props.policy} onClick={props.onSubmit} />
+						<SimulateButton text={<><ArrowLeftOutlined /> Simulate on the population</>} policy={props.policy} onClick={props.onSubmit}/>
+						<SimulateButton text={<><ArrowLeftOutlined /> Return to your household</>} target="/household" policy={props.policy} onClick={props.onSubmit} />
 					</Empty> :
 					<></>
 			}

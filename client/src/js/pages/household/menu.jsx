@@ -14,13 +14,13 @@ function SituationMenu(props) {
 		<Menu
 			mode="inline"
 			onClick={e => props.onSelect(e.key)}
-			defaultOpenKeys={["family"]}
+			defaultOpenKeys={["tax_unit"]}
 			defaultSelectedKeys={["head"]}
 			triggerSubMenuAction="hover"
 		>
 			<Menu.Item key="household">Your household</Menu.Item>
-			<SubMenu key="family" title="Your immediate family">
-				<Menu.Item key="family_1">Family</Menu.Item>
+			<SubMenu key="tax_unit" title="Your tax unit">
+				<Menu.Item key="tax_unit_1">Tax unit</Menu.Item>
 				<Menu.Item key="head">You</Menu.Item>
 				<Menu.Item key="partner">{
 					numAdults == 1 ?

@@ -31,7 +31,7 @@ class Simulator(HttpUser):
 
     @task
     def visitHouseholdPage(self):
-        self.client.get("/situation")
+        self.client.get("/household")
 
     @task
     def populationSim(self):
@@ -58,7 +58,7 @@ class Simulator(HttpUser):
                 used_policies += [name]
         num_properties = randint(1, 4)
         used_properties = []
-        url = "/api/situation-reform?"
+        url = "/api/household-reform?"
         for _ in range(num_properties):
             name = PROPERTY_NAMES[randint(0, len(PROPERTY_NAMES) - 1)]
             if name not in used_properties:

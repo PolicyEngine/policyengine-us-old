@@ -22,24 +22,6 @@ def headline_figures(baseline: IndividualSim, reformed: IndividualSim) -> dict:
         }
 
     VARIABLES = [
-        "tax",
-        "income_tax",
-        "basic_rate_earned_income_tax",
-        "higher_rate_earned_income_tax",
-        "add_rate_earned_income_tax",
-        "national_insurance",
-        "employee_NI_class_1",
-        "employer_NI_class_1",
-        "NI_class_2",
-        "NI_class_4",
-        "universal_credit",
-        "UC_maximum_amount",
-        "UC_income_reduction",
-        "benefits",
-        "child_benefit",
-        "household_net_income",
-        "total_income",
-        "gross_income",
         "net_income",
     ]
     return {name: get_values(name) for name in VARIABLES}

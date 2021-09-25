@@ -13,10 +13,7 @@ GRAY = "#BDBDBD"
 BLUE_COLOR_SEQUENCE = [LIGHTER_BLUE, LIGHT_BLUE, BLUE, DARK_BLUE]
 
 
-def format_fig(
-    fig: go.Figure,
-    show: bool = True,
-) -> Union[None, go.Figure]:
+def format_fig(fig: go.Figure, show: bool = True,) -> Union[None, go.Figure]:
     """Formats figure with styling and logo.
 
     :param fig: Plotly figure.

@@ -1,9 +1,9 @@
 import React from "react";
-import SituationMenu from "./situation/menu";
+import SituationMenu from "./household/menu";
 import { Row, Col } from "react-bootstrap";
-import SituationControls from "./situation/controls";
-import { DEFAULT_FAMILY, DEFAULT_HOUSEHOLD, DEFAULT_ADULT, DEFAULT_CHILD } from "./situation/default_situation";
-import SituationOverview from "./situation/overview";
+import SituationControls from "./household/controls";
+import { DEFAULT_FAMILY, DEFAULT_HOUSEHOLD, DEFAULT_ADULT, DEFAULT_CHILD } from "./household/default_situation";
+import SituationOverview from "./household/overview";
 
 class Situation extends React.Component {
 	constructor(props) {
@@ -36,8 +36,8 @@ class Situation extends React.Component {
 		let situation = this.state.situation;
 		if(selected in situation.people) {
 			situation.people[selected][key].value = value;
-		} else if(selected in situation.families) {
-			situation.families[selected][key].value = value;
+		} else if(selected in situation.tax_units) {
+			situation.tax_units[selected][key].value = value;
 		} else {
 			situation.household[key].value = value;
 		}

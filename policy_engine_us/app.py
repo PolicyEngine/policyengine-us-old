@@ -8,6 +8,7 @@ from google.cloud import storage
 import gc
 
 from policy_engine_us.simulation.reforms import create_reform, BASELINE_REFORM
+from policy_engine_us.simulation.situations import create_situation
 
 from policy_engine_us.populations.metrics import headline_metrics
 from policy_engine_us.populations.charts import (
@@ -18,12 +19,20 @@ from policy_engine_us.populations.charts import (
     population_waterfall_chart,
 )
 
+from policy_engine_us.situations.charts import (
+    budget_chart,
+    mtr_chart,
+    household_waterfall_chart,
+)
+
+from policy_engine_us.situations.metrics import headline_figures
+
 VERSION = "0.0.11"
 USE_CACHE = False
 logging.getLogger("werkzeug").disabled = True
 
-client = storage.Client()
-bucket = client.get_bucket("uk-policy-engine.appspot.com")
+# client = storage.Client()
+# bucket = client.get_bucket("uk-policy-engine.appspot.com")
 
 baseline = Microsimulation(BASELINE_REFORM)
 
@@ -41,9 +50,9 @@ def static_site():
 STATIC_SITE_ROUTES = (
     "/",
     "/faq",
-    "/situation",
+    "/household",
     "/population-results",
-    "/situation-results",
+    "/household-results",
 )
 
 for route in STATIC_SITE_ROUTES:
@@ -83,11 +92,11 @@ def population_reform():
     app.logger.info("Population reform request received")
     params = {**request.args, **(request.json or {})}
     request_id = "population-" + dict_to_string(params) + "-" + VERSION
-    blob = bucket.blob(request_id + ".json")
-    if blob.exists() and USE_CACHE:
-        app.logger.info("Returning cached response")
-        result = json.loads(blob.download_as_string())
-        return result
+    # blob = bucket.blob(request_id + ".json")
+    # if blob.exists() and USE_CACHE:
+    #    app.logger.info("Returning cached response")
+    #    result = json.loads(blob.download_as_string())
+    #    return result
     reform, components = create_reform(params, return_names=True)
     reformed = Microsimulation(reform)
     result = dict(
@@ -103,8 +112,8 @@ def population_reform():
     del reformed
     del reform
     if USE_CACHE:
-        blob.upload_from_string(json.dumps(result))
-    gc.collect()
+        pass
+        # blob.upload_from_string(json.dumps(result))
     duration = time() - start_time
     app.logger.info(f"Population reform completed ({round(duration, 2)}s)")
     return result
@@ -114,29 +123,29 @@ def dict_to_string(d):
     return "_".join(["_".join((x, y)) for x, y in d.items()])
 
 
-@app.route("/api/situation-reform", methods=["GET", "POST"])
+@app.route("/api/household-reform", methods=["GET", "POST"])
 def situation_reform():
     start_time = time()
     app.logger.info("Situation reform request received")
     params = {**request.args, **(request.json or {})}
     request_id = "situation-" + dict_to_string(params) + "-" + VERSION
-    blob = bucket.blob(request_id + ".json")
-    if blob.exists() and USE_CACHE:
-        app.logger.info("Returning cached response")
-        result = json.loads(blob.download_as_string())
-        return result
+    # blob = bucket.blob(request_id + ".json")
+    # if blob.exists() and USE_CACHE:
+    #    app.logger.info("Returning cached response")
+    #    result = json.loads(blob.download_as_string())
+    #    return result
     situation = create_situation(params)
     reform, subreform_labels = create_reform(params, return_names=True)
-    baseline_config = use_current_parameters(), add_LVT()
-    reform_config = use_current_parameters(), reform
+    baseline_config = ()  # use_current_parameters(), add_LVT()
+    reform_config = reform  # use_current_parameters(), reform
     baseline = situation(IndividualSim(baseline_config, year=2021))
     reformed = situation(IndividualSim(reform_config, year=2021))
     headlines = headline_figures(baseline, reformed)
     waterfall = household_waterfall_chart(
         reform, subreform_labels, situation, baseline, reformed
     )
-    baseline.vary("employment_income", step=10)
-    reformed.vary("employment_income", step=10)
+    baseline.vary("e00200", step=10)
+    reformed.vary("e00200", step=10)
     budget = budget_chart(baseline, reformed)
     mtr = mtr_chart(baseline, reformed)
     del situation

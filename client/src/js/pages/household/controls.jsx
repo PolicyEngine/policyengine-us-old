@@ -1,5 +1,5 @@
 import { ParameterGroup } from "../policy/controls";
-import { DEFAULT_HOUSEHOLD, DEFAULT_FAMILY, DEFAULT_ADULT, DEFAULT_CHILD } from "./default_situation";
+import { DEFAULT_HOUSEHOLD, DEFAULT_TAX_UNIT, DEFAULT_ADULT, DEFAULT_CHILD } from "./default_situation";
 
 function SituationControls(props) {
 	const returnFunction = (key, value) => {props.onEnter(key, value, props.selected);};
@@ -16,8 +16,8 @@ function SituationControls(props) {
 			return <></>;
 		}
 		
-	} else if(props.selected.includes("family")) {
-		return <ParameterGroup onChange={returnFunction} policy={props.situation.families[props.selected]} names={Object.keys(DEFAULT_FAMILY)} />;
+	} else if(props.selected.includes("tax_unit")) {
+		return <ParameterGroup onChange={returnFunction} policy={props.situation.tax_units[props.selected]} names={Object.keys(DEFAULT_TAX_UNIT)} />;
 	} else {
 		return <ParameterGroup onChange={returnFunction} policy={props.situation.household} names={Object.keys(DEFAULT_HOUSEHOLD)} />;
 	}

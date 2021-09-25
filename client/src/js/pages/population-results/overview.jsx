@@ -42,8 +42,8 @@ function PolicySituationOverview(props) {
 					<Empty description="" image={null}>
 						<SimulateButton text={<><ArrowLeftOutlined /> Change the policy reform</>} target="/" policy={props.policy} onClick={props.onSubmit} />
 						<SimulateButton hidden text="🠔 Simulate on the population" target="/population-results" policy={props.policy} onClick={props.onSubmit}/>
-						<SimulateButton primary text="Describe your household" target="/situation" policy={props.policy} onClick={props.onSubmit} />
-						<SimulateButton disabled text="See your results" target="/situation-results" policy={props.policy} onClick={props.onSubmit} />
+						<SimulateButton primary text="Describe your household" target="/household" policy={props.policy} onClick={props.onSubmit} />
+						<SimulateButton disabled text="See your results" target="/household-results" policy={props.policy} onClick={props.onSubmit} />
 					</Empty> :
 					null
 			}

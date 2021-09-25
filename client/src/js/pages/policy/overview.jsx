@@ -20,7 +20,7 @@ function policyToURL(base, policy) {
 
 export function SimulateButton(props) {
 	const { policy } = props;
-	const url = policyToURL(props.target || "/situation", policy);
+	const url = policyToURL(props.target || "/household", policy);
 	if(props.hidden) {return <></>;}
 	return (
 		<div style={{marginBottom: 20}}>
@@ -48,8 +48,8 @@ function PolicyOverview(props) {
 			<Empty description="" image={null}>
 				<SimulateButton hidden text="Select your reform" target="/" policy={props.policy} onClick={props.onSubmit} />
 				<SimulateButton primary text="Simulate on the population" target="/population-results" policy={props.policy} onClick={props.onSubmit}/>
-				<SimulateButton text="Skip to your household" target="/situation" policy={props.policy} onClick={props.onSubmit} />
-				<SimulateButton disabled text="See your results" target="/situation-results" policy={props.policy} onClick={props.onSubmit} />
+				<SimulateButton text="Skip to your household" target="/household" policy={props.policy} onClick={props.onSubmit} />
+				<SimulateButton disabled text="See your results" target="/household-results" policy={props.policy} onClick={props.onSubmit} />
 			</Empty>
 			<SharePolicyLinks policy={props.policy}/>
 		</>

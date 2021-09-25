@@ -26,7 +26,7 @@ function ChangedHeadlineFigure(props) {
 	console.log(props);
 	const data = props.results[props.name];
 	const variable = VARIABLES[props.name];
-	const formatNumber = num => (props.gbp ? "£" : "") + num.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+	const formatNumber = num => (props.gbp ? "$" : "") + num.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
 	const oldV = formatNumber(data.old);
 	const newV = formatNumber(data.new);
 	let prefix = null;
@@ -107,7 +107,7 @@ export function SituationResultsPane(props) {
 	const netIncome = props.results["net_income"];
 	const isGain = netIncome.new > netIncome.old;
 	const isLoss = netIncome.new < netIncome.old;
-	const formatNumber = num => "£" + num.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+	const formatNumber = num => "$" + num.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
 	const difference = formatNumber(Math.abs(netIncome.new - netIncome.old));
 	const percentageChange = Math.round(Math.abs((netIncome.new - netIncome.old) / netIncome.old) * 100) + "%";
 	return (

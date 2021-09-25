@@ -56,12 +56,7 @@ def poverty_chart(baseline, reform):
         }
     )
     fig = format_fig(
-        px.bar(
-            df,
-            x="Group",
-            y="Poverty rate change",
-        ),
-        show=False,
+        px.bar(df, x="Group", y="Poverty rate change",), show=False,
     )
     fig.update_layout(
         title="Poverty rate changes",
@@ -105,13 +100,7 @@ def add_zero_line(fig):
 def waterfall(values, labels, gain_label="Spending", loss_label="Revenue"):
     final_color = DARK_BLUE
     if len(labels) == 0:
-        df = pd.DataFrame(
-            {
-                "Amount": [],
-                "Reform": [],
-                "Type": [],
-            }
-        )
+        df = pd.DataFrame({"Amount": [], "Reform": [], "Type": [],})
     else:
         df = pd.DataFrame({"Amount": values, "Reform": labels, "Type": ""})
         df = df[df.Amount != 0]
@@ -130,11 +119,7 @@ def waterfall(values, labels, gain_label="Spending", loss_label="Revenue"):
             df = pd.concat(
                 [
                     pd.DataFrame(
-                        {
-                            "Amount": base,
-                            "Reform": df.Reform,
-                            "Type": "",
-                        }
+                        {"Amount": base, "Reform": df.Reform, "Type": "",}
                     ),
                     df,
                     pd.DataFrame(
@@ -147,13 +132,7 @@ def waterfall(values, labels, gain_label="Spending", loss_label="Revenue"):
                 ]
             )
         else:
-            df = pd.DataFrame(
-                {
-                    "Amount": [],
-                    "Reform": [],
-                    "Type": [],
-                }
-            )
+            df = pd.DataFrame({"Amount": [], "Reform": [], "Type": [],})
     fig = px.bar(
         df,
         x="Reform",
@@ -289,13 +268,9 @@ DARK_GRAY = "#616161"
 LIGHT_GRAY = "#F5F5F5"
 LIGHT_GREEN = "#C5E1A5"
 DARK_GREEN = "#558B2F"
-INTRA_DECILE_COLORS = (
-    DARK_GRAY,
-    GRAY,
-    LIGHT_GRAY,
-    LIGHT_GREEN,
-    DARK_GREEN,
-)[::-1]
+INTRA_DECILE_COLORS = (DARK_GRAY, GRAY, LIGHT_GRAY, LIGHT_GREEN, DARK_GREEN,)[
+    ::-1
+]
 
 
 def intra_decile_chart(baseline, reformed):
@@ -333,8 +308,7 @@ def intra_decile_chart(baseline, reformed):
     fig.add_traces(fig1.data, 2, 1)
     fig.update_layout(barmode="stack")
     fig = format_fig(fig, show=False).update_layout(
-        title="Intra-decile outcomes",
-        xaxis_tickformat="%",
+        title="Intra-decile outcomes", xaxis_tickformat="%",
     )
     fig.update_xaxes(tickformat="%")
     for i in range(5):

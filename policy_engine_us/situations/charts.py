@@ -1,11 +1,10 @@
 from openfisca_us import IndividualSim
-from policy_engine.utils.formatting import DARK_BLUE, format_fig
-from policy_engine.populations.charts import waterfall
+from policy_engine_us.utils.formatting import DARK_BLUE, format_fig, GRAY, BLUE
+from policy_engine_us.populations.charts import waterfall
 import json
 import plotly.express as px
 import pandas as pd
 import numpy as np
-from ubicenter.plotly import GRAY, BLUE
 
 WHITE = "#FFF"
 
@@ -27,9 +26,7 @@ def budget_chart(baseline: IndividualSim, reformed: IndividualSim) -> str:
     """
     df = pd.DataFrame(
         {
-            "Employment income": baseline.calc("employment_income").sum(
-                axis=0
-            ),
+            "Employment income": baseline.calc("e00200").sum(axis=0),
             "Baseline": baseline.calc("net_income").sum(axis=0),
             "Reform": reformed.calc("net_income").sum(axis=0),
         }
@@ -47,8 +44,8 @@ def budget_chart(baseline: IndividualSim, reformed: IndividualSim) -> str:
             title="Net income by employment income",
             xaxis_title="Employment income",
             yaxis_title="Household net income",
-            yaxis_tickprefix="£",
-            xaxis_tickprefix="£",
+            yaxis_tickprefix="$",
+            xaxis_tickprefix="$",
             legend_title=None,
         )
         .to_json()
@@ -66,7 +63,7 @@ def mtr_chart(baseline: IndividualSim, reformed: IndividualSim) -> str:
         string.
     :rtype: str
     """
-    earnings = baseline.calc("employment_income").sum(axis=0)
+    earnings = baseline.calc("e00200").sum(axis=0)
     baseline_net = baseline.calc("net_income").sum(axis=0)
     reform_net = reformed.calc("net_income").sum(axis=0)
 
@@ -95,7 +92,7 @@ def mtr_chart(baseline: IndividualSim, reformed: IndividualSim) -> str:
         .update_layout(
             title="Effective marginal tax rate by employment income",
             xaxis_title="Employment income",
-            xaxis_tickprefix="£",
+            xaxis_tickprefix="$",
             yaxis_tickformat="%",
             yaxis_title="Effective MTR",
             legend_title=None,
@@ -129,7 +126,7 @@ def household_waterfall_chart(reform, labels, situation, baseline, reformed):
         title="Budget breakdown",
         xaxis_title=None,
         yaxis_title="Yearly amount",
-        yaxis_tickprefix="£",
+        yaxis_tickprefix="$",
         legend_title=None,
     )
     return json.loads(fig.to_json())

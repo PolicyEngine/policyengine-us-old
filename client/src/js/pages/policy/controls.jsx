@@ -138,7 +138,7 @@ export class UBIParameterGroup extends React.Component {
 				<>Other elements of this reform would fund a UBI of <Spin indicator={antIcon}/> per week for all people</> : 
 				this.state.error ? 
 					"Something went wrong." : 
-					`Other elements of this reform would fund a UBI of £${Math.round(this.state.UBI_amount / 52)} per week for all people`;
+					`Other elements of this reform would fund a UBI of $${Math.round(this.state.UBI_amount / 52)} per week for all people`;
 		return (
 			<>
 				<Parameter name="child_UBI" disabled={this.state.addUBI} onChange={this.props.onChange} param={this.props.policy["child_UBI"]} />
