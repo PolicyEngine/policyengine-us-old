@@ -32,9 +32,7 @@ def add_LVT() -> Reform:
             LVT_charge = person.household("LVT", period) * person(
                 "is_household_head", period
             )
-            original_tax = BASELINE_VARIABLES.tax.formula(
-                person, period, parameters
-            )
+            original_tax = BASELINE_VARIABLES.tax.formula(person, period, parameters)
             return original_tax + LVT_charge
 
     def add_lvt_param(parameters: ParameterNode):
@@ -363,9 +361,7 @@ def create_reform(parameters: dict, return_names=False):
         "housing_benefit",
         "state_pension",
     )
-    for variable, var, name in zip(
-        ABOLITIONS, ABOLITION_VARS, ABOLITION_NAMES
-    ):
+    for variable, var, name in zip(ABOLITIONS, ABOLITION_VARS, ABOLITION_NAMES):
         if f"abolish_{variable}" in params:
             if params[f"abolish_{variable}"]:
                 reforms += [neutralizer_reform(var)]

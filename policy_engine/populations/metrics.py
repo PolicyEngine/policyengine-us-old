@@ -12,9 +12,7 @@ def poverty_rate(sim, population_var):
     ].mean()
 
 
-def headline_metrics(
-    baseline: Microsimulation, reformed: Microsimulation
-) -> dict:
+def headline_metrics(baseline: Microsimulation, reformed: Microsimulation) -> dict:
     """Compute headline society-wide metrics.
 
     :param baseline: Baseline simulation.
@@ -28,9 +26,7 @@ def headline_metrics(
     new_income = reformed.calc("equiv_household_net_income", map_to="person")
     old_income = baseline.calc("equiv_household_net_income", map_to="person")
     gain = new_income - old_income
-    net_cost = (
-        reformed.calc("net_income").sum() - baseline.calc("net_income").sum()
-    )
+    net_cost = reformed.calc("net_income").sum() - baseline.calc("net_income").sum()
     poverty_change = pct_change(
         baseline.calc("in_poverty_bhc", map_to="person").mean(),
         reformed.calc("in_poverty_bhc", map_to="person").mean(),

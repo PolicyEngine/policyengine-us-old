@@ -72,9 +72,7 @@ def ubi():
         return result
     reform, _ = create_reform(params, return_names=True)
     reformed = Microsimulation(reform)
-    revenue = (
-        baseline.calc("net_income").sum() - reformed.calc("net_income").sum()
-    )
+    revenue = baseline.calc("net_income").sum() - reformed.calc("net_income").sum()
     UBI_amount = max(0, revenue / baseline.calc("people").sum())
     result = {"UBI": float(UBI_amount)}
     if USE_CACHE:
@@ -183,9 +181,9 @@ def after_request_func(response):
         response.headers.add("Access-Control-Allow-Credentials", "true")
         if origin:
             response.headers.add("Access-Control-Allow-Origin", origin)
-        response.headers[
-            "Cache-Control"
-        ] = "no-cache, no-store, must-revalidate, public, max-age=0"
+        response.headers["Cache-Control"] = (
+            "no-cache, no-store, must-revalidate, public, max-age=0"
+        )
         response.headers["Pragma"] = "no-cache"
         response.headers["Expires"] = "0"
 
