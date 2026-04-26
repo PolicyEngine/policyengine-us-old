@@ -29,7 +29,10 @@ def create_situation(params: dict):
                     value = False
                 if variable not in variables and variable != "family":
                     print(f"Skipping variable {variable}")
-                if variable == "family" or variables[variable].entity.key == "person":
+                if (
+                    variable == "family"
+                    or variables[variable].entity.key == "person"
+                ):
                     if entity_id not in people:
                         people[entity_id] = {}
                     if variable == "family":
@@ -65,7 +68,12 @@ def create_situation(params: dict):
                     family_names += [str(i + 1)]
                     family_members[str(i + 1)] = []
                 adoptive_family = family_names[i]
-                while len(list(filter(is_adult, family_members[adoptive_family]))) >= 2:
+                while (
+                    len(
+                        list(filter(is_adult, family_members[adoptive_family]))
+                    )
+                    >= 2
+                ):
                     i += 1
                     if i == len(families):
                         families[str(i + 1)] = {}

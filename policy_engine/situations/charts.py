@@ -27,7 +27,9 @@ def budget_chart(baseline: IndividualSim, reformed: IndividualSim) -> str:
     """
     df = pd.DataFrame(
         {
-            "Employment income": baseline.calc("employment_income").sum(axis=0),
+            "Employment income": baseline.calc("employment_income").sum(
+                axis=0
+            ),
             "Baseline": baseline.calc("net_income").sum(axis=0),
             "Reform": reformed.calc("net_income").sum(axis=0),
         }
@@ -110,7 +112,9 @@ def household_waterfall_chart(reform, labels, situation, baseline, reformed):
     net_income += [reformed.calc("net_income").sum()]
     net_income = np.array(net_income)
     budget_effects = net_income[1:] - net_income[:-1]
-    fig = waterfall(budget_effects, labels, gain_label="Gain", loss_label="Loss")
+    fig = waterfall(
+        budget_effects, labels, gain_label="Gain", loss_label="Loss"
+    )
     fig.add_shape(
         type="line",
         xref="paper",

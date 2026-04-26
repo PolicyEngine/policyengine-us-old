@@ -76,13 +76,17 @@ def poverty_chart(baseline, reform):
 
 
 def spending(baseline, reformed):
-    return reformed.calc("net_income").sum() - baseline.calc("net_income").sum()
+    return (
+        reformed.calc("net_income").sum() - baseline.calc("net_income").sum()
+    )
 
 
 def get_partial_funding(reform, baseline, **kwargs):
     expenditure = []
     for i in range(1, len(reform) + 1):
-        expenditure += [spending(baseline, Microsimulation(reform[:i], **kwargs))]
+        expenditure += [
+            spending(baseline, Microsimulation(reform[:i], **kwargs))
+        ]
     return expenditure
 
 
@@ -175,7 +179,9 @@ def total_income(sim):
 def population_waterfall_chart(reform, labels, baseline, reformed):
     net_income = [total_income(baseline)]
     for i in range(1, len(reform)):
-        partially_reformed = Microsimulation(use_current_parameters(), reform[:i])
+        partially_reformed = Microsimulation(
+            use_current_parameters(), reform[:i]
+        )
         net_income += [total_income(partially_reformed)]
     net_income += [total_income(reformed)]
     net_income = np.array(net_income)
@@ -243,10 +249,12 @@ def intra_decile_graph_data(baseline, reformed):
     l = []
     income = baseline.calc("equiv_household_net_income", map_to="person")
     decile = income.decile_rank()
-    gain = reformed.calc("household_net_income", map_to="person") - baseline.calc(
+    gain = reformed.calc(
         "household_net_income", map_to="person"
-    )
-    rel_gain = (gain / baseline.calc("household_net_income", map_to="person")).dropna()
+    ) - baseline.calc("household_net_income", map_to="person")
+    rel_gain = (
+        gain / baseline.calc("household_net_income", map_to="person")
+    ).dropna()
     bands = (None, 0.05, 1e-3, -1e-3, -0.05, None)
     for upper, lower, name in zip(bands[:-1], bands[1:], NAMES):
         fractions = []

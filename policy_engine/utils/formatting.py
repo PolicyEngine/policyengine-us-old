@@ -28,8 +28,12 @@ def format_fig(
         formatted plotly figure.
     :rtype: go.Figure
     """
-    fig.update_xaxes(title_font=dict(size=16, color="black"), tickfont={"size": 14})
-    fig.update_yaxes(title_font=dict(size=16, color="black"), tickfont={"size": 14})
+    fig.update_xaxes(
+        title_font=dict(size=16, color="black"), tickfont={"size": 14}
+    )
+    fig.update_yaxes(
+        title_font=dict(size=16, color="black"), tickfont={"size": 14}
+    )
     fig.update_layout(
         hoverlabel_align="right",
         font_family="Roboto",

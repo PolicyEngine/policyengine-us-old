@@ -72,7 +72,9 @@ def ubi():
         return result
     reform, _ = create_reform(params, return_names=True)
     reformed = Microsimulation(reform)
-    revenue = baseline.calc("net_income").sum() - reformed.calc("net_income").sum()
+    revenue = (
+        baseline.calc("net_income").sum() - reformed.calc("net_income").sum()
+    )
     UBI_amount = max(0, revenue / baseline.calc("people").sum())
     result = {"UBI": float(UBI_amount)}
     if USE_CACHE:
